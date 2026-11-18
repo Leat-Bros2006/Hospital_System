@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Google+Sans+Flex&family=Jost:ital,wght@0,100..900;1,100..900&family=Kantumruy+Pro:wght@100..700&family=Koulen&family=Moul&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme{
+    /* ពណ៌គោលសម្រាប់ប្រព័ន្ធមន្ទីរពេទ្យ */
+    --color-hospital-primary: red;      /* ខៀវមន្ទីរពេទ្យ (Light) */
+    --color-hospital-primary-dark: #38bdf8; /* ខៀវភ្លឺ (Dark) */
+    --color-hospital-accent: #0d9488;       /* បៃតងសុខាភិបាល */
+
+    /* ពណ៌ផ្ទៃខាងក្រោយ (Background & Card) */
+    --color-light-bg: #f8fafc;
+    --color-light-card: #ffffff;
+    --color-dark-bg: #0f172a;
+    --color-dark-card: #1e293b;
+}
