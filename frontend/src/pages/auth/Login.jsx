@@ -1,16 +1,40 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { Mail, Lock, Eye, EyeOff, Cross, ShieldCheck, Stethoscope, User } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { Mail, Phone, Lock, Eye, EyeOff, Cross, ShieldCheck, Stethoscope, User } from 'lucide-react';
 
 const Login = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('user'); // 'user' | 'doctor' | 'admin'
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
-        email: '',
-        password: '',
+        email: '012345678',
+        password: 'password123',
         remember: false,
     });
+
+    // ប្តូរតួនាទី និងបំពេញទិន្នន័យគំរូដោយស្វ័យប្រវត្តិសម្រាប់តេស្ត Prototype
+    const handleRoleSelect = (selectedRole) => {
+        setRole(selectedRole);
+        if (selectedRole === 'admin') {
+            setFormData((prev) => ({
+                ...prev,
+                email: 'admin@hospital.com',
+                password: 'password123',
+            }));
+        } else if (selectedRole === 'doctor') {
+            setFormData((prev) => ({
+                ...prev,
+                email: 'doctor@hospital.com',
+                password: 'password123',
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                email: '012345678',
+                password: 'password123',
+            }));
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -23,7 +47,10 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Role (Prototype Navigation)
+        // រក្សាទុកតួនាទីបណ្ដោះអាសន្នសម្រាប់ Prototype
+        localStorage.setItem('role', role);
+
+        // បញ្ជូនទៅកាន់ទំព័រតាមតួនាទី
         if (role === 'admin') {
             navigate('/admin/dashboard');
         } else if (role === 'doctor') {
@@ -65,7 +92,7 @@ const Login = () => {
 
             {/* Right */}
             <div className="flex items-center justify-center p-6 sm:p-12 bg-slate-50/80 dark:bg-slate-950 transition-colors duration-300">
-                {/* Card Container មានស្រមោល និងគែមស្អាត */}
+                {/* Card Container */}
                 <div className="w-full max-w-md space-y-7 bg-white dark:bg-slate-900 p-7 sm:p-9 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xl shadow-slate-200/60 dark:shadow-2xl dark:shadow-black/50">
 
                     {/* ចំណងជើង */}
@@ -82,11 +109,12 @@ const Login = () => {
                     <div className="grid grid-cols-3 gap-2 p-1.5 bg-slate-100/90 dark:bg-slate-800/90 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-inner">
                         <button
                             type="button"
-                            onClick={() => setRole('user')}
-                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${role === 'user'
+                            onClick={() => handleRoleSelect('user')}
+                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${
+                                role === 'user'
                                     ? 'bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-400 shadow-md shadow-slate-200/70 dark:shadow-black/30 ring-1 ring-slate-200/50 dark:ring-slate-600'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                                }`}
+                            }`}
                         >
                             <User className="w-4 h-4" />
                             <span>អ្នកជំងឺ</span>
@@ -94,11 +122,12 @@ const Login = () => {
 
                         <button
                             type="button"
-                            onClick={() => setRole('doctor')}
-                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${role === 'doctor'
+                            onClick={() => handleRoleSelect('doctor')}
+                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${
+                                role === 'doctor'
                                     ? 'bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-400 shadow-md shadow-slate-200/70 dark:shadow-black/30 ring-1 ring-slate-200/50 dark:ring-slate-600'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                                }`}
+                            }`}
                         >
                             <Stethoscope className="w-4 h-4" />
                             <span>គ្រូពេទ្យ</span>
@@ -106,11 +135,12 @@ const Login = () => {
 
                         <button
                             type="button"
-                            onClick={() => setRole('admin')}
-                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${role === 'admin'
+                            onClick={() => handleRoleSelect('admin')}
+                            className={`flex items-center justify-center gap-1.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer ${
+                                role === 'admin'
                                     ? 'bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-400 shadow-md shadow-slate-200/70 dark:shadow-black/30 ring-1 ring-slate-200/50 dark:ring-slate-600'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                                }`}
+                            }`}
                         >
                             <ShieldCheck className="w-4 h-4" />
                             <span>បុគ្គលិក</span>
@@ -119,20 +149,28 @@ const Login = () => {
 
                     {/* Form បញ្ចូលព័ត៌មាន */}
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* អ៊ីមែល */}
+                        {/* អ៊ីមែល ឬ លេខទូរស័ព្ទ */}
                         <div className="space-y-1.5">
                             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                អ៊ីមែល (Email)
+                                {role === 'user' ? 'អ៊ីមែល ឬ លេខទូរស័ព្ទ' : 'អ៊ីមែល (Email)'}
                             </label>
                             <div className="relative group">
-                                <Mail className="w-5 h-5 text-slate-400 group-focus-within:text-sky-500 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2" />
+                                {role === 'user' ? (
+                                    <Phone className="w-5 h-5 text-slate-400 group-focus-within:text-sky-500 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2" />
+                                ) : (
+                                    <Mail className="w-5 h-5 text-slate-400 group-focus-within:text-sky-500 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2" />
+                                )}
                                 <input
-                                    type="email"
+                                    type={role === 'user' ? 'text' : 'email'}
                                     name="email"
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    placeholder="example@hospital.com"
+                                    placeholder={
+                                        role === 'user'
+                                            ? '012 345 678 ឬ example@gmail.com'
+                                            : 'example@hospital.com'
+                                    }
                                     className="w-full pl-11 pr-4 py-3 bg-slate-50/70 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm shadow-xs focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 focus:shadow-md focus:shadow-sky-500/10 dark:text-white transition-all"
                                 />
                             </div>
@@ -177,12 +215,17 @@ const Login = () => {
                                 <span>ចងចាំខ្ញុំ</span>
                             </label>
 
-                            <Link
-                                to="/forgot-password"
-                                className="font-medium text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 hover:underline transition-colors"
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    alert(
+                                        'សូមទាក់ទងផ្នែកទទួលភ្ញៀវ ឬអ្នកគ្រប់គ្រងប្រព័ន្ធ (Admin) ដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។'
+                                    )
+                                }
+                                className="font-medium text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 hover:underline transition-colors cursor-pointer"
                             >
                                 ភ្លេចពាក្យសម្ងាត់?
-                            </Link>
+                            </button>
                         </div>
 
                         {/* ប៊ូតុង Login */}
@@ -194,21 +237,23 @@ const Login = () => {
                         </button>
                     </form>
 
-                    {/* តំណភ្ជាប់ Register សម្រាប់អ្នកជំងឺ */}
-                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                    {/* សារណែនាំផ្នែកខាងក្រោមតាមតួនាទី */}
+                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
                         {role === 'user' ? (
-                            <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-                                មិនទាន់មានគណនីអ្នកជំងឺមែនទេ?{' '}
-                                <Link
-                                    to="/register"
-                                    className="font-semibold text-sky-600 dark:text-sky-400 hover:underline"
-                                >
-                                    ចុះឈ្មោះទីនេះ
-                                </Link>
+                            <p className="text-center text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                សម្រាប់អ្នកជំងឺថ្មី សូមទាក់ទង{' '}
+                                <span className="font-medium text-slate-700 dark:text-slate-300">
+                                    ផ្នែកទទួលភ្ញៀវ (Receptionist)
+                                </span>{' '}
+                                នៅមន្ទីរពេទ្យផ្ទាល់ ដើម្បីចុះឈ្មោះបង្កើតគណនី។
                             </p>
                         ) : (
                             <p className="text-center text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                                សម្រាប់បុគ្គលិក និងគ្រូពេទ្យ សូមទាក់ទងអ្នកគ្រប់គ្រងប្រព័ន្ធ (Admin) ដើម្បីទទួលបានគណនី។
+                                សម្រាប់បុគ្គលិក និងគ្រូពេទ្យ សូមទាក់ទង{' '}
+                                <span className="font-medium text-slate-700 dark:text-slate-300">
+                                    អ្នកគ្រប់គ្រងប្រព័ន្ធ (Admin)
+                                </span>{' '}
+                                ដើម្បីទទួលបានគណនី។
                             </p>
                         )}
                     </div>
